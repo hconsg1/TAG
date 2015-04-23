@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title id="count"><%=count%></title>
+        
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="animate.css">
+
+</head>
+
+<body >
+
+<a href="display" target="_parent"><button> Random Album</button></a>
+<a href="/" target="_parent"><button> Back to Upload</button></a>
+
+
+<script type="text/javascript">
+var imlocation = "uploads/";
+var currentdate = 0;
+var image_number = 0;
+var c = document.getElementById("count").innerHTML;
+
+rowGroup = [1,2,3,3,4,5,6];
+ani = ["rubberBand", "swing", "tada", "flash", "bounce"];
+image = new ImageArray(c)
+pic = []
+groupPic = [];
+
+
+function ImageArray (n) {
+  this.length = n;
+  for (var i =1; i <= n; i++) {
+    this[i] = ' '
+  }
+}
+
+//to shuffle image array
+function shuffle(o){ 
+ for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};   
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+//to get random animation
+function getRanAni(){
+  var num = Math.floor((Math.random()*5));
+  return ani[num];
+}
+
+
+//to get random position for bouncing ball
+function getRanPos(){
+  var pos = Math.floor((Math.random()*70));
+  return pos.toString()
+}
+
+
+//make an array of images 
+ for (i=0;i<c;i++){
+  image[i] = (i+1).toString()+".jpg"
+  console.log(i);
+  pic[i]=i;
+ }
+
+
+randNum = Math.floor((Math.random()*rowGroup.length));
+randChoice = shuffle(pic);
+picNum=image.length;
+
+
+//to randomize photo groups (10 photos --> [2,3,5] or [1,2,3,4,1] or [5,5] or ... )
+//then distributed to different templates according to the number per group
+while (picNum != 0){
+  randNum = Math.floor((Math.random()*rowGroup.length));
+  if (picNum>=rowGroup[randNum]){
+    groupPic.push(rowGroup[randNum]);
+    picNum= picNum-rowGroup[randNum];
+  }
+}
+
+
+
+//uses forloop to randomize/distribute photos 
+var count = 0;
+for (i=0;i<groupPic.length;i++){
+  if (groupPic[i]==1){
+    document.write("<div class='wow bounceInRight row3'><img class='ball' style='left:"+getRanPos()+"%' src='../uploads/"+image[randChoice[count]]+"'></div>")
+    count = count+1;
+  }
+  if (groupPic[i]==2){
+    document.write("<div class='row2 grow'><img class='circle  wow animated rollIn' src='../uploads/"+image[randChoice[count]]+"'><img class='circle  wow animated rollIn' src='../uploads/"+image[randChoice[count+1]]+"'></div>")
+  
+    count=count+2;
+  }
+  else if (groupPic[i]==3){
+    if (Math.random()>0.5){
+      document.write("<div class='row2'><img class='big tilt'src='../uploads/"+image[randChoice[count]]+"'><img class='small1 wow infinite "+getRanAni()+"' src='../uploads/"+image[randChoice[count+1]]+"'><img class='small2 spin'src='../uploads/"+image[randChoice[count+2]]+"'></div>")
+    count = count+3;
+    }
+    else {
+      document.write("<div class='row1'><img class='left1 morph wow bounceInLeft' src='../uploads/"+image[randChoice[count]]+"'><img class='center wow infinite "+getRanAni()+"' src='../uploads/"+image[randChoice[count+1]]+"' transform='rotate(-5deg);''><img class='right1 morph wow bounceInRight'src='../uploads/"+image[randChoice[count+2]]+"'></div>")
+    count = count+3;
+    }
+  }
+  else if (groupPic[i]==4){
+    document.write("<div class='row4 growX'><img class='cube3 wow bounceInLeft' src='../uploads/"+image[randChoice[count]]+"'><img class='cube3 wow bounceInDown' src='../uploads/"+image[randChoice[count+1]]+"'><img class='cube3 wow bounceInDown'src='../uploads/"+image[randChoice[count+2]]+"'><img class='cube3 wow bounceInRight' src='../uploads/"+image[randChoice[count+3]]+"'></div>")
+    count = count +4;
+  }
+  else if (groupPic[i]==5){
+    document.write("<div class='row2 wow flipInX'><img class='paral tilt' src='../uploads/"+image[randChoice[count]]+"'><img class='paral tilt' src='../uploads/"+image[randChoice[count+1]]+"'><img class='wow infinite "+getRanAni()+" norm'src='../uploads/"+image[randChoice[count+2]]+"'><img class='paral1 tilt' src='../uploads/"+image[randChoice[count+3]]+"'><img class='paral1 tilt'src='../uploads/"+image[randChoice[count+4]]+"'></div>")
+    count = count +5; 
+  }
+  else if (groupPic[i]==6){ 
+    document.write("<div class='row2 wow flipInX'><img class='cube1 sink' src='../uploads/"+image[randChoice[count]]+"'><img class='cube1 sink' src='../uploads/"+image[randChoice[count+1]]+"'><img class='cube1 sink'src='../uploads/"+image[randChoice[count+2]]+"'><img class='cube2 float' src='../uploads/"+image[randChoice[count+3]]+"'><img class='cube2 float'src='../uploads/"+image[randChoice[count+4]]+"'><img class='cube2 float'src='../uploads/"+image[randChoice[count+5]]+"'></div>")
+    count = count +6; 
+  }
+  
+}
+
+//randomize border color
+var imgs = document.getElementsByTagName('img');
+for (var i =0; i<imgs.length; i++){
+  imgs[i].style.borderColor=getRandomColor();
+}
+
+
+</script>
+</body>
+<!-- Wow -->
+    <script src="wow.min.js"></script>
+    <script>
+       new WOW().init();
+     </script>
+
+
+</html>
